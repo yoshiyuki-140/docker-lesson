@@ -1,0 +1,23 @@
+# SSL証明書の場所 (実際にある場所を入れてください。)
+# 多分コンテナ側のパスかなと思っている
+ssl_certificate     /etc/nginx/letsencrypt/live/kuro-140.com/fullchain.pem;
+ssl_certificate_key /etc/nginx/letsencrypt/live/kuro-140.com/privkey.pem;
+
+
+# ssl_prefer_server_ciphersをonに指定すると、利用する暗号を選ぶ際に、
+# SSLv3やTLSではサーバが示した暗号スイートが優先されます。
+# offにするとクライアントのものが優先されます。デフォルトはoffです。
+# これはnginxの機能というよりはOpenSSLの機能で、
+# SSL_CTX_set_options()にSSL_OP_CIPHER_SERVER_PREFERENCEを設定します。
+# https://heartbeats.jp/hbblog/2012/06/nginx06.html
+ssl_prefer_server_ciphers on;
+
+
+# サーバー側で有効にするプロトコル
+ssl_protocols TLSv1.3;
+
+
+# サーバー側で有効にする暗号
+# 参考：https://rms.ne.jp/sslserver/basis/forward_secrecy_apache_ngix/
+ssl_ciphers "EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EECDH EDH+aRSA RC4 !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS !RC4";
+

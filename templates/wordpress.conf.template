@@ -1,0 +1,17 @@
+server {
+    listen       ${NGINX_WP_PORT};
+    server_name  ${NGINX_WP_HOST};
+
+    access_log  /var/log/nginx/host.access.log  main;
+
+    location / {
+        proxy_pass http://wordpress;  # コンテナ名を指定
+        proxy_redirect   off;
+        proxy_set_header Host               $host;
+        proxy_set_header X-Forwarded-For    $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Host   $host;
+        proxy_set_header X-Forwarded-Server $host;
+        proxy_set_header X-Real-IP          $remote_addr;
+        proxy_set_header X-Forwarded-Proto  https;
+    }
+}

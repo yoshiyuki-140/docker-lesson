@@ -1,0 +1,27 @@
+# HTTPをHTTPに飛ばす設定
+server {
+    listen 80;
+    server_name ${NGINX_HOST};
+    rewrite ^(.*)$ https://$host$1 permanent;
+}
+
+
+############## リバースプロキシ本体 ###################
+server {
+    listen       ${NGINX_PORT};
+    server_name  ${NGINX_HOST};
+
+    # アクセスログ 全部取る
+    access_log  /var/log/nginx/host.access.log  main;
+
+    # SSL設定
+    include /etc/nginx/certpath.txt;
+
+    # ロケーション設定
+    location / {
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+    }
+
+
+}
